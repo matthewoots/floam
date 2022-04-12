@@ -125,10 +125,10 @@ int main(int argc, char **argv)
     lidar_param.setMinDistance(min_dis);
 
     laserMapping.init(map_resolution);
-    ros::Subscriber subLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>("/velodyne_points_filtered", 100, velodyneHandler);
-    ros::Subscriber subOdometry = nh.subscribe<nav_msgs::Odometry>("/odom", 100, odomCallback);
+    ros::Subscriber subLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>("/velodyne_points_filtered", 3, velodyneHandler);
+    ros::Subscriber subOdometry = nh.subscribe<nav_msgs::Odometry>("/odom", 3, odomCallback);
 
-    map_pub = nh.advertise<sensor_msgs::PointCloud2>("/map", 100);
+    map_pub = nh.advertise<sensor_msgs::PointCloud2>("/map", 1);
     std::thread laser_mapping_process{laser_mapping};
 
     ros::spin();

@@ -75,8 +75,10 @@ void odom_estimation(){
             pcl::fromROSMsg(*pointCloudEdgeBuf.front(), *pointcloud_edge_in);
             pcl::fromROSMsg(*pointCloudSurfBuf.front(), *pointcloud_surf_in);
             ros::Time pointcloud_time = (pointCloudSurfBuf.front())->header.stamp;
-            pointCloudEdgeBuf.pop();
-            pointCloudSurfBuf.pop();
+            while (!pointCloudEdgeBuf.empty()) 
+                pointCloudEdgeBuf.pop();
+            while (!pointCloudSurfBuf.empty())
+                pointCloudSurfBuf.pop();
             mutex_lock.unlock();
 
             if(is_odom_inited == false){
@@ -154,10 +156,10 @@ int main(int argc, char **argv)
     lidar_param.setMinDistance(min_dis);
 
     odomEstimation.init(lidar_param, map_resolution);
-    ros::Subscriber subEdgeLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_edge", 100, velodyneEdgeHandler);
-    ros::Subscriber subSurfLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf", 100, velodyneSurfHandler);
+    ros::Subscriber subEdgeLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_edge", 1, velodyneEdgeHandler);
+    ros::Subscriber subSurfLaserCloud = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf", 1, velodyneSurfHandler);
 
-    pubLaserOdometry = nh.advertise<nav_msgs::Odometry>("/odom", 100);
+    pubLaserOdometry = nh.advertise<nav_msgs::Odometry>("/odom", 3);
     std::thread odom_estimation_process{odom_estimation};
 
     ros::spin();

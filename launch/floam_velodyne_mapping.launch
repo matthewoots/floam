@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    
+    <!-- For Velodyne VLP-16 -->
+    <param name="scan_line" value="16" />
+
+    <!--- Sim Time -->
+    <param name="scan_period" value="0.1" />
+
+    <param name="vertical_angle" type="double" value="17.5" />
+    <param name="map_resolution" type="double" value="0.1" />
+    <param name="max_dis" type="double" value="20.0" />
+    <param name="min_dis" type="double" value="0.5" />
+    <!--- -->
+    <node pkg="floam" type="floam_laser_mapping_node" name="floam_laser_mapping_node" output="screen"/>
+
+</launch>
